@@ -6,7 +6,7 @@ import StatCard from "@/components/StatCard";
 import UploadZone from "@/components/UploadZone";
 import TransferRow from "@/components/TransferRow";
 import { networkInfo, transfers } from "@/lib/mock-data";
-import { getFiles } from "@/lib/api";
+// import { getFiles } from "@/lib/api";
 import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
@@ -16,7 +16,13 @@ export default function DashboardPage() {
 
   const [files, setFiles] = useState([]);
   useEffect(() => {
-    getFiles().then(setFiles).catch(console.error);
+    fetch("http://172.19.4.34:5000/files", { method: "GET" })
+      .then((res) => {
+        if (!res.ok) throw new Error("Network response was not ok");
+        console.log("this is our files");
+        console.log(res.json());
+      })
+      .catch(console.error);
   }, []);
 
   return (
