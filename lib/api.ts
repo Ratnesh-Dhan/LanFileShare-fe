@@ -15,7 +15,7 @@ export async function uploadFile(file: File, targetDeviceId?: string) {
   return res.json();
 }
 
-export function uploadFieWithProgress(
+export function uploadFileWithProgress(
   file: File,
   onProgress: (precent: number) => void,
   targetDeviceId?: string,
@@ -32,6 +32,16 @@ export function uploadFieWithProgress(
       if (e.lengthComputable)
         onProgress(Math.round((e.loaded / e.total) * 100));
     };
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        const response = JSON.parse(xhr.responseText);
+        resolve(response.file);
+      } else {
+        reject(new Error(xhr.responseText));
+      }
+    };
+    xhr.onerror = () => reject(new Error("Upload failed"));
+    xhr.send(formData);
   });
 }
 

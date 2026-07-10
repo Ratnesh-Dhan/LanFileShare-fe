@@ -6,3 +6,10 @@ export interface ApiFile {
   uploadedAt: string;
   uploadedBy?: string;
 }
+
+export interface UploadItem {
+  id: string;
+  file: File;
+  progress: number;
+  status: "uploading" | "done" | "error";
+}
