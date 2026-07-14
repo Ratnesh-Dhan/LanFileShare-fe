@@ -51,15 +51,19 @@ export async function getFiles() {
   return res.json();
 }
 
-export async function downloadFile(fileId: string) {
+export async function downloadFile(filename: string) {
   console.log(BASE_URL);
-  const res = await fetch(`${BASE_URL}/download/${fileId}`);
+  const res = await fetch(`${BASE_URL}/download/${filename}`, {
+    method: "GET",
+  });
   if (!res.ok) throw new Error("Download failed");
   return res.blob();
 }
 
-export async function deleteFile(fileId: string) {
-  const res = await fetch(`${BASE_URL}/delete/${fileId}`, { method: "DELETE" });
+export async function deleteFile(fileName: string) {
+  const res = await fetch(`${BASE_URL}/delete/${fileName}`, {
+    method: "DELETE",
+  });
   if (!res.ok) throw new Error("Delete failed");
   return res.json();
 }

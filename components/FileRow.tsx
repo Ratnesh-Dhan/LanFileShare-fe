@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import type { ApiFile } from "@/types/alltypes";
 import { formatBytes, formatRelativeTime } from "@/lib/format";
+import { deleteFile, downloadFile } from "@/lib/api";
 
 function renderFileIcon(type: string, className: string) {
   const props = { className, strokeWidth: 1.75 };
@@ -72,8 +73,7 @@ export default function FileRow({
     setDownloading(true);
     setError(null);
     try {
-      const { downloadFile } = await import("@/lib/api");
-      const blob = await downloadFile(file.id);
+      const blob = await downloadFile(file.name);
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -95,8 +95,7 @@ export default function FileRow({
     setDeleting(true);
     setError(null);
     try {
-      const { deleteFile } = await import("@/lib/api");
-      await deleteFile(file.id);
+      await deleteFile(file.name);
       onDeleted(file.id);
     } catch {
       setError("Delete failed");

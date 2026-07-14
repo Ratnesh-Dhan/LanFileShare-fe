@@ -45,6 +45,7 @@ export default function FilesPage() {
   };
 
   useEffect(() => {
+    console.log("UseEffect running for client status check.");
     let cancelled = false;
     setLoading(true);
     // getFiles().then((data) => {
@@ -84,9 +85,9 @@ export default function FilesPage() {
     return files.filter((f) => f.name.toLowerCase().includes(q));
   }, [files, query]);
 
-  function handleDeleted(id: string) {
+  const handleDeleted = (id: string) => {
     setFiles((prev) => prev.filter((f) => f.id !== id));
-  }
+  };
 
   return (
     <>
