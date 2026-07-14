@@ -1,4 +1,4 @@
-import { ApiFile } from "@/types/alltypes";
+import { ApiFile, UploadItem } from "@/types/alltypes";
 
 const BASE_URL = "http://172.19.4.34:5000";
 
@@ -16,13 +16,16 @@ export async function uploadFile(file: File, targetDeviceId?: string) {
 }
 
 export function uploadFileWithProgress(
-  file: File,
+  item: UploadItem,
   onProgress: (precent: number) => void,
   targetDeviceId?: string,
 ): Promise<ApiFile> {
   return new Promise((resolve, reject) => {
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", item.file);
+    formData.append("id", item.id);
+    formData.append("name", item.name);
+    formData.append("size", item.size);
     if (targetDeviceId) formData.append("targetDeviceId", targetDeviceId);
 
     const xhr = new XMLHttpRequest();
@@ -48,11 +51,13 @@ export function uploadFileWithProgress(
 export async function getFiles() {
   const res = await fetch(`${BASE_URL}/files`);
   if (!res.ok) throw new Error("Failed to fetch files");
-  return res.json();
+  const data = await res.json();
+  return data;
 }
 
 export async function downloadFile(filename: string) {
   console.log(BASE_URL);
+  console.log(filename);
   const res = await fetch(`${BASE_URL}/download/${filename}`, {
     method: "GET",
   });

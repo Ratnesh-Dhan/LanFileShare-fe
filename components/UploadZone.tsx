@@ -21,6 +21,8 @@ export default function UploadZone({
 
     const newItems: UploadItem[] = files.map((file) => ({
       id: `${file.name}-${file.size}-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      name: file.name,
+      size: file.size.toString(),
       file,
       progress: 0,
       status: "uploading",
@@ -28,7 +30,7 @@ export default function UploadZone({
     setItems((prev) => [...prev, ...newItems]);
 
     newItems.forEach((item) => {
-      uploadFileWithProgress(item.file, (percent) => {
+      uploadFileWithProgress(item, (percent) => {
         setItems((prev) =>
           prev.map((i) => (i.id === item.id ? { ...i, progress: percent } : i)),
         );

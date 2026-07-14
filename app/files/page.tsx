@@ -33,14 +33,14 @@ export default function FilesPage() {
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
 
-  const randomInfo = (id: number, nam: string) => {
+  const objGenerator = (element: ApiFile) => {
     return {
-      id: id.toString(),
-      name: nam,
-      size: Math.floor(Math.random() * 10),
-      type: "jpg",
-      uploadedAt: String(new Date()),
-      uploadedBy: "Amit",
+      id: element.id,
+      name: element.name,
+      size: element.size,
+      uploadedAt: element.uploadedAt,
+      ip: element.ip,
+      type: element.type,
     };
   };
 
@@ -60,8 +60,10 @@ export default function FilesPage() {
       .then((data) => {
         if (!cancelled) {
           //   setFiles(data["files"]);
-          data["files"].forEach((element: string, key: number) => {
-            apiObj.push(randomInfo(key, element));
+          console.log(data["data"]);
+          data["data"].forEach((element: ApiFile) => {
+            apiObj.push(objGenerator(element));
+            // apiObj.push(randomInfo(key, element));
           });
           setFiles(apiObj);
           setError(null);

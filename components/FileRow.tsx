@@ -73,7 +73,7 @@ export default function FileRow({
     setDownloading(true);
     setError(null);
     try {
-      const blob = await downloadFile(file.name);
+      const blob = await downloadFile(file.id);
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -114,7 +114,7 @@ export default function FileRow({
           <p className="text-sm text-ink truncate">{file.name}</p>
           <p className="text-[11px] text-ink-faint font-mono truncate">
             {formatBytes(file.size)} · {formatRelativeTime(file.uploadedAt)}
-            {file.uploadedBy ? ` · ${file.uploadedBy}` : ""}
+            {file.ip ? ` · ${file.ip}` : ""}
             {error && <span className="text-danger"> · {error}</span>}
           </p>
         </div>
